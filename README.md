@@ -1,2 +1,2 @@
-# barber_roque
+# Barber Roque
 Aplicativo para barbearias
