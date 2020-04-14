@@ -1,9 +1,16 @@
+import 'package:barber_roque/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'auth_firebase.dart';
+
+class EmailFielValidadator{
+  static String validade(String value) => value.isEmpty ? "e-mail obrigatório !" : null;
+}
+
+class PasswordFielValidador{
+  static String validade(String value) => value.isEmpty ? "senha obrigatória !" : null;
+}
 
 class LoginPage extends StatefulWidget {
-  LoginPage({this.auth, this.onSignedIn});
-  final BaseAuth auth;
+  LoginPage({this.onSignedIn});
   final VoidCallback onSignedIn;
 
   @override
@@ -37,11 +44,12 @@ class _LoginPageState extends State<LoginPage>{
   void validateAndSubmit() async{
     if (validateAndSave()){
       try{
+        var auth = AuthProvider.of(context).auth;
         if(_formType == FormType.login){
-          String userId = (await widget.auth.singInWithEmailAndPassword(_email, _password));
+          String userId = (await auth.singInWithEmailAndPassword(_email, _password));
           print('Signed in: $userId');
         }else{
-          String userId = (await widget.auth.createUserWithEmailAndPassword(_email, _password));
+          String userId = (await auth.createUserWithEmailAndPassword(_email, _password));
           print('Registered in: $userId');
         }
         widget.onSignedIn();
@@ -91,14 +99,14 @@ class _LoginPageState extends State<LoginPage>{
         //e-mail
         new TextFormField(
           decoration: new InputDecoration(labelText: 'e-mail:'),
-          validator: (value) => value.isEmpty ? "e-mail obrigatório !" : null,
+          validator: EmailFielValidadator.validade,
           onSaved: (value) => _email = value,
         ),
         //senha
         new TextFormField(
           decoration: new InputDecoration(labelText: 'Senha:'),
           obscureText: true,
-          validator: (value) => value.isEmpty ? "senha obrigatória !" : null,
+          validator: PasswordFielValidador.validade,
           onSaved: (value) => _password = value,
         ),
       ];

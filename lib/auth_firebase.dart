@@ -27,7 +27,7 @@ class Auth implements BaseAuth {
   //Verificação de login
   Future<String> currentUser() async {
     FirebaseUser user = (await _firebaseAuth.currentUser());
-    return user.uid;
+    return (user != null ? user.uid: null);
   }
 
   //Logout

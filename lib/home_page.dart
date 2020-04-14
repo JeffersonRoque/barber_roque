@@ -1,14 +1,14 @@
+import 'package:barber_roque/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'auth_firebase.dart';
 
 class HomePage extends StatelessWidget{
-  HomePage({this.auth, this.onSignedOut});
-  final BaseAuth auth;
+  HomePage({this.onSignedOut});
   final VoidCallback onSignedOut;
 
   //logout - usuário
-  void _signOut() async{
+  void _signOut(BuildContext context) async{
     try{
+      var auth = AuthProvider.of(context).auth;
       await auth.signOut();
       onSignedOut();
     }catch (e) {
@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget{
         title: new Text('Seja bem vindo !!!'),
         actions: <Widget>[
           new FlatButton(
-              onPressed: _signOut, 
+              onPressed: () =>_signOut(context), 
               child: new Text ('Logout', style: new TextStyle(fontSize: 12.0, color: Colors.white),
              )
           )

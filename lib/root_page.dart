@@ -1,13 +1,10 @@
+import 'package:barber_roque/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'login_page.dart';
-import 'auth_firebase.dart';
 import 'home_page.dart';
 
 //Classe Raiz - Intermédio entre home e Login Page
 class RootPage extends StatefulWidget{
-  RootPage({this.auth});
-  final BaseAuth auth;
-
   @override
   State<StatefulWidget> createState() => new _RootPageState();
 }
@@ -24,9 +21,10 @@ class _RootPageState extends State<RootPage>{
 
   //Verifica se o usuário já esta logado
   @override
-  void initState() {
-    super.initState();
-    widget.auth.currentUser().then((userId){
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var auth = AuthProvider.of(context).auth;
+    auth.currentUser().then((userId){
       setState((){
         _authStatus = userId == null ? AuthStatus.notSignedIn : AuthStatus.signedIn;
       });
@@ -54,13 +52,11 @@ class _RootPageState extends State<RootPage>{
     switch (_authStatus){
       case AuthStatus.notSignedIn:
         return new LoginPage(
-          auth: widget.auth,
           onSignedIn: _signedIn,
           );
       case AuthStatus.signedIn:
         return new Scaffold(
           body: new HomePage(
-            auth: widget.auth,
             onSignedOut: _signedOut,
           ),
         );
