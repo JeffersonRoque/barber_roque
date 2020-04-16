@@ -2,15 +2,12 @@ import 'package:barber_roque/auth_provider.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget{
-  HomePage({this.onSignedOut});
-  final VoidCallback onSignedOut;
 
   //logout - usuário
   void _signOut(BuildContext context) async{
     try{
       var auth = AuthProvider.of(context).auth;
       await auth.signOut();
-      onSignedOut();
     }catch (e) {
       print(e);
     }

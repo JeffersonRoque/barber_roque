@@ -10,9 +10,6 @@ class PasswordFielValidador{
 }
 
 class LoginPage extends StatefulWidget {
-  LoginPage({this.onSignedIn});
-  final VoidCallback onSignedIn;
-
   @override
   State<StatefulWidget> createState() => new _LoginPageState();
 }
@@ -20,12 +17,11 @@ class LoginPage extends StatefulWidget {
 //Tipo de Formulários
 enum FormType {
   login,
-  register
+  register,
 }
 
 class _LoginPageState extends State<LoginPage>{
-
-  final formKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   String _email;
   String _password;
@@ -46,13 +42,12 @@ class _LoginPageState extends State<LoginPage>{
       try{
         var auth = AuthProvider.of(context).auth;
         if(_formType == FormType.login){
-          String userId = (await auth.singInWithEmailAndPassword(_email, _password));
+          String userId = (await auth.signInWithEmailAndPassword(_email, _password));
           print('Signed in: $userId');
         }else{
           String userId = (await auth.createUserWithEmailAndPassword(_email, _password));
           print('Registered in: $userId');
         }
-        widget.onSignedIn();
       }
       catch (e){
         print('Error $e');
@@ -98,12 +93,14 @@ class _LoginPageState extends State<LoginPage>{
       return [
         //e-mail
         new TextFormField(
+          key: Key('email'),
           decoration: new InputDecoration(labelText: 'e-mail:'),
           validator: EmailFielValidadator.validade,
           onSaved: (value) => _email = value,
         ),
         //senha
         new TextFormField(
+          key: Key('password'),
           decoration: new InputDecoration(labelText: 'Senha:'),
           obscureText: true,
           validator: PasswordFielValidador.validade,
@@ -118,6 +115,7 @@ class _LoginPageState extends State<LoginPage>{
         return [
           //Login
           new RaisedButton(
+            key: Key('signIn'),
             child: new Text('Login', style: new TextStyle(fontSize: 20.0)),
             onPressed: validateAndSubmit,
           ),
