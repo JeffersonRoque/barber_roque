@@ -3,23 +3,21 @@ import 'package:flutter/material.dart';
 import 'auth_firebase.dart';
 import 'root_page.dart';
 
-void main() {
-  runApp(new MyApp());
-}
+void main() => runApp(new MyApp());
 
-class MyApp extends StatelessWidget{
-
+class MyApp extends StatelessWidget {
+  
   @override
-    Widget build(BuildContext context){
-      return AuthProvider(
+  Widget build(BuildContext context) {
+    return AuthProvider(
         auth: Auth(),
         child: MaterialApp(
-          title: "Roque Barbearia login",
+          debugShowCheckedModeBanner: false,
+          title: "Roque Barbearia",
           theme: new ThemeData(
-            primarySwatch: Colors.blue, 
+            primarySwatch: Colors.blue,
           ),
           home: new RootPage(), //Pagina principal
-        )
-      );
-    }
+        ));
+  }
 }
